@@ -66,7 +66,8 @@ module Annotations
       pattern = "#{dir}/**/*"
       pattern += ".{#{@extensions}}" if @extensions
 
-      Dir.glob(pattern) do |item|
+      dirs = Dir.glob(pattern).reject { |f| f[%r(./vendor/bundle)] }
+      dirs.each do |item|
         next if File.basename(item)[0] == ?. or File.directory?(item)
 
         if item =~ /\.(ru|builder|coffee|(r(?:b|xml|js)))$/
